@@ -62,8 +62,8 @@ import wildDraw4 from "./assets/UnoCards/Wild_Draw_4.jpg";
 export const cardImages = {
   back,
   wild,
-  wild_wild: wild,
-  wild_draw4: wildDraw4,
+  wild_: wild,
+  wilddrawfour_: wildDraw4,
 
   red_number0: red0,
   red_number1: red1,

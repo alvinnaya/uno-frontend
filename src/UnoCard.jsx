@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import { cardImages } from "./cardImage.jsx"
 
 export default function UnoCard({ color, value, hidden, card }) {
-  const parts = card?.split(" ") ?? [];
+const parts = card?.split(" ") ?? [];
 const key = `${(parts[0] ?? "").toLowerCase()}_${(parts[1] ?? "").toLowerCase()}`;
 const src = cardImages[key] ?? cardImages.back;
 
