@@ -11,11 +11,11 @@ export default function PlayerHand({playCard, cards}) {
   }, [cards]);
 
 
-  const { PlayerId } = useParams();
+  const { roomId, playerId } = useParams();
   return (
     <div className="flex gap-0">
       {cards?.map((card, i) => (
-        <div onClick={() => playCard(PlayerId, i)} className={`-ml-10 first:ml-0 z-10 hover:z-50`} key={i}> 
+        <div onClick={() => playCard(playerId, roomId, i)} className={`-ml-10 first:ml-0 z-10 hover:z-50`} key={i}> 
             <UnoCard key={i} card={card.card} />
         </div>
         

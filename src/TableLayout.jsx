@@ -2,19 +2,20 @@ import PlayerHand from "./PlayerHand"
 import OpponentHand from "./OpponentHand"
 import GameBoard from "./GameBoard"
 import { useParams } from "react-router-dom";
-import { useGameSocket } from "./UseGameSocket"
 import { useEffect,useMemo } from "react";
 
-export default function TableLayout({ gameState, playerState, getCurrentState, playCard, drawCard, getPlayerCards, connectionState }) {
+export default function TableLayout({ gameState, playerState, getCurrentState, playCard, drawCard, getPlayerCards, connectionState,callUno }) {
 
-  const { PlayerId } = useParams();
+  const { roomId, playerId } = useParams();
   
 
 useEffect(() => {
     if (connectionState !== "connected") return;
-    getPlayerCards(PlayerId);
-    console.log("Fetched player cards for", PlayerId);
-  },[connectionState])
+    if (!roomId || !playerId) return;
+    getCurrentState(roomId);
+    getPlayerCards(playerId, roomId);
+    console.log("Fetched player cards for", playerId);
+  },[connectionState, roomId, playerId, getCurrentState, getPlayerCards])
   
 
 useEffect(() => {
@@ -24,8 +25,9 @@ useEffect(() => {
 }, [gameState,playerState]);
 
 useEffect(()=>{
-  getPlayerCards(PlayerId);
-},[gameState])
+  if (!roomId || !playerId) return;
+  getPlayerCards(playerId, roomId);
+},[gameState, roomId, playerId, getPlayerCards])
 
 
  const { me, opponents } = useMemo(() => {
@@ -34,15 +36,15 @@ useEffect(()=>{
     }
 
     const me = gameState.allPlayers.find(
-      (p) => p.name === PlayerId
+      (p) => p.name === playerId
     );
 
     const opponents = gameState.allPlayers.filter(
-      (p) => p.name !== PlayerId
+      (p) => p.name !== playerId
     );
 
     return { me, opponents };
-  }, [gameState, PlayerId]);
+  }, [gameState, playerId]);
 
   /**
    * =========================
@@ -99,13 +101,13 @@ useEffect(()=>{
 
       {/* TENGAH (DECK + DISCARD) */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <GameBoard drawCard={drawCard} gameState={gameState}  />
+        <GameBoard drawCard={drawCard} gameState={gameState} callUno={callUno} />
       </div>
 
       {/* PLAYER 1 (BAWAH - KAMU) */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2">
         <PlayerHand playCard={playCard} cards={playerState?.hand } />
-        <p className="text-center text-white mt-2">{PlayerId}</p>
+        <p className="text-center text-white mt-2">{playerId}</p>
       </div>
 
     </div>

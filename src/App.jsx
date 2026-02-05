@@ -5,7 +5,6 @@ import TableLayout from './TableLayout'
 import { useGameSocket } from "./UseGameSocket"
 import { Routes, Route } from "react-router-dom";
 import CreatePlayerScreen from "./CreatePlayerScreen";
-import { useEffect } from "react";
 
 
 function App() {
@@ -18,23 +17,17 @@ const {
     drawCard,
     getCurrentState,
     getPlayerCards,
+    callUno,
   } = useGameSocket();
 
 
-  useEffect(() => {
-    if (connectionState !== "connected") return;
-    getCurrentState();
-  
-
-    console.log("TableLayout useEffect ran");
-  }, [connectionState]);
   return (
     <>
      
 
        <Routes>
       <Route path="/" element={<CreatePlayerScreen />} />
-      <Route path="/:PlayerId" element={<TableLayout 
+      <Route path="/:roomId/:playerId" element={<TableLayout 
         gameState={gameState}
         playerState={playerState}
         playCard={playCard}
@@ -42,6 +35,7 @@ const {
         getCurrentState={getCurrentState}
         getPlayerCards={getPlayerCards}
         connectionState={connectionState}
+        callUno={callUno}
       />} />
      
     </Routes>

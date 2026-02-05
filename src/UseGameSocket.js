@@ -56,33 +56,35 @@ export function useGameSocket() {
     sendRawMessage(`Game createplayer ${count}`)
   }, [])
 
-  const startGame = useCallback(() => {
-    sendRawMessage("Game start")
+  const startGame = useCallback((roomId) => {
+    if (!roomId) return
+    sendRawMessage(`Game start ${roomId}`)
   }, [])
 
-  const getCurrentState = useCallback(() => {
-    sendRawMessage("Game getcurrentstate")
+  const getCurrentState = useCallback((roomId) => {
+    if (!roomId) return
+    sendRawMessage(`Game getcurrentstate ${roomId}`)
     console.log("Requested current state")
   }, [])
 
-  const getPlayerCards = useCallback((playerName) => {
-    if (!playerName) return
-    sendRawMessage(`${playerName} getcard`)
+  const getPlayerCards = useCallback((playerName, roomId) => {
+    if (!playerName || !roomId) return
+    sendRawMessage(`${playerName} getcard ${roomId}`)
   }, [])
 
-  const playCard = useCallback((playerName, cardIndex) => {
-    if (!playerName && playerName !== 0) return
-    sendRawMessage(`${playerName} play ${cardIndex}`)
+  const playCard = useCallback((playerName, roomId, cardIndex) => {
+    if (!playerName || !roomId) return
+    sendRawMessage(`${playerName} play ${roomId} ${cardIndex}`)
   }, [])
 
-  const drawCard = useCallback((playerName) => {
-    if (!playerName && playerName !== 0) return
-    sendRawMessage(`${playerName} draw`)
+  const drawCard = useCallback((playerName, roomId) => {
+    if (!playerName || !roomId) return
+    sendRawMessage(`${playerName} draw ${roomId}`)
   }, [])
 
-  const callUno = useCallback((playerName) => {
-    if (!playerName) return
-    sendRawMessage(`${playerName} uno`)
+  const callUno = useCallback((playerName, roomId) => {
+    if (!playerName || !roomId) return
+    sendRawMessage(`${playerName} uno ${roomId}`)
   }, [])
 
   return {
