@@ -10,14 +10,19 @@ import { useEffect } from "react";
 
 function App() {
 
-const {
+  const {
     gameState,
     playerState,
+    info,
     connectionState,
     playCard,
     drawCard,
     getCurrentState,
     getPlayerCards,
+    callUno,
+    setInfo,
+    gameEndMessege,
+    gameReset,
   } = useGameSocket();
 
 
@@ -37,11 +42,16 @@ const {
       <Route path="/:PlayerId" element={<TableLayout 
         gameState={gameState}
         playerState={playerState}
+        info={info}
         playCard={playCard}
         drawCard={drawCard}
         getCurrentState={getCurrentState}
         getPlayerCards={getPlayerCards}
         connectionState={connectionState}
+        callUno={callUno}
+        setInfo={setInfo}
+        gameReset={gameReset}
+        gameEndMessege={gameEndMessege}
       />} />
      
     </Routes>

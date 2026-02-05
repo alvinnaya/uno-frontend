@@ -8,6 +8,8 @@ export function useGameSocket() {
   const [error, setError] = useState(null)
   const [connectionState, setConnectionState] = useState("connecting")
   const [lastRawMessage, setLastRawMessage] = useState(null)
+  const [playerUno, setPlayerUno] = useState(null)
+  const [gameEndMessege, setGameEndMessege] = useState(null)
 
   useEffect(() => {
     connectSocket(
@@ -24,7 +26,9 @@ export function useGameSocket() {
             break
 
           case "info":
-            setInfo(message.data?.message ?? message.data)
+            console.log("info",message.data?.message )
+            
+            setInfo(message.data?.message )
             break
 
           case "error":
@@ -34,6 +38,11 @@ export function useGameSocket() {
           case "RAW_MESSAGE":
             setLastRawMessage(message.data)
             break
+          case "UnoState":
+            setPlayerUno(message.data);
+            break
+          case "GameEnd":
+            setGameEndMessege(message.data)
 
           default:
             console.warn("Unknown message:", message)
@@ -70,9 +79,9 @@ export function useGameSocket() {
     sendRawMessage(`${playerName} getcard`)
   }, [])
 
-  const playCard = useCallback((playerName, cardIndex) => {
+  const playCard = useCallback((playerName, cardIndex, color) => {
     if (!playerName && playerName !== 0) return
-    sendRawMessage(`${playerName} play ${cardIndex}`)
+    sendRawMessage(`${playerName} play ${cardIndex} ${color}`)
   }, [])
 
   const drawCard = useCallback((playerName) => {
@@ -84,6 +93,10 @@ export function useGameSocket() {
     if (!playerName) return
     sendRawMessage(`${playerName} uno`)
   }, [])
+
+  const gameReset = useCallback(() =>{
+    sendRawMessage(`Game reset`)
+  },[])
 
   return {
     gameState,
@@ -100,5 +113,9 @@ export function useGameSocket() {
     playCard,
     drawCard,
     callUno,
+    setInfo,
+    playerUno,
+    gameEndMessege,
+    gameReset
   }
 }

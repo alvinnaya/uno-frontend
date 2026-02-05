@@ -10,10 +10,10 @@ const src = cardImages[key] ?? cardImages.back;
     
 
   return (
-    <div className="w-28  hover:-translate-y-2 transition">
+    <div className="w-28  hover:-translate-y-2 transition rounded-lg">
       <img
         src={src}
-        className="w-full h-full object-contain"
+        className="w-full h-full object-contain rounded-lg"
         alt="UNO card"
       />
     </div>

@@ -2,14 +2,32 @@ import PlayerHand from "./PlayerHand"
 import OpponentHand from "./OpponentHand"
 import GameBoard from "./GameBoard"
 import { useParams } from "react-router-dom";
-import { useGameSocket } from "./UseGameSocket"
-import { useEffect,useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-export default function TableLayout({ gameState, playerState, getCurrentState, playCard, drawCard, getPlayerCards, connectionState }) {
+export default function TableLayout({ 
+  gameState, 
+  playerState, 
+  info,
+  setInfo, 
+  getCurrentState,
+  playCard, 
+  drawCard, 
+  getPlayerCards, 
+  connectionState, 
+  callUno,
+  gameEnd,
+  gameReset,
+  gameEndMessege,
+ }) {
 
   const { PlayerId } = useParams();
-  
+  const [infoVisible, setInfoVisible] = useState(false)
+  const [infoMessage, setInfoMessage] = useState("")
+  const [infoGameEnd, setInfoGameEnd] = useState(null)
+  const [isGameOver, setIsGameOver] = useState(false)
 
+
+ 
 useEffect(() => {
     if (connectionState !== "connected") return;
     getPlayerCards(PlayerId);
@@ -26,6 +44,24 @@ useEffect(() => {
 useEffect(()=>{
   getPlayerCards(PlayerId);
 },[gameState])
+
+useEffect(()=>{
+
+  setInfoGameEnd(gameEndMessege?.winner)
+
+},[gameEndMessege])
+
+useEffect(() => {
+  if (!info) return
+  setInfoMessage(info)
+  const timer = setTimeout(() => {
+    setInfoMessage(null)
+    setInfo(null)
+  }, 2500)
+  return () => clearTimeout(timer)
+}, [info])
+
+
 
 
  const { me, opponents } = useMemo(() => {
@@ -56,11 +92,41 @@ useEffect(()=>{
 
 
   return (
-    <div className="relative w-full h-screen bg-blue-800 overflow-hidden">
+    <div className="relative w-full h-screen overflow-hidden bg-neutral-800">
+
+
+    {gameState?.gameEnd&&(
+      <div className="w-screen h-screen bg-black/60 absolute z-50 flex flex-col items-center justify-center ">
+          <div className="bg-white w-[30rem] h-[20rem] flex flex-col p-8 items-center rounded-xl ">
+             <h1 className="text-3xl text-center p-6 font-bold">{`${infoGameEnd? infoGameEnd:"the winner are not decided yet"}`}</h1>
+             <div className="p-4 my-16">
+                <div onClick={()=>{gameReset();  navigate(`/`);}}
+                 className="bg-red-600 select-none text-lg p-2 font-semibold rounded-lg m-auto hover:bg-red-500">end game</div>
+             </div>
+          </div>
+      </div>
+
+    )}
+
+      
+      
+
+      {infoMessage && (
+        <div className={`fixed top-6 left-1/2 -translate-x-1/2 z-[999] transition-opacity duration-500 bg-white`}>
+          <div className="bg-white text-black px-4 py-2 rounded-lg shadow-lg">
+            {infoMessage}
+          </div>
+        </div>
+      )}
+
+
+      
+
+    
       
         {/* ========= PLAYER ATAS ========= */}
       {topOpponent && (
-        <div className="absolute top-6 left-1/2 -translate-x-1/2">
+        <div className="absolute top-6 left-1/2 -translate-x-1/2 ">
           <OpponentHand
             direction="horizontal"
             label={topOpponent.name}
@@ -99,7 +165,7 @@ useEffect(()=>{
 
       {/* TENGAH (DECK + DISCARD) */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <GameBoard drawCard={drawCard} gameState={gameState}  />
+        <GameBoard drawCard={drawCard} gameState={gameState} callUno={callUno} />
       </div>
 
       {/* PLAYER 1 (BAWAH - KAMU) */}
