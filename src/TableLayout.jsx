@@ -1,7 +1,7 @@
 import PlayerHand from "./PlayerHand"
 import OpponentHand from "./OpponentHand"
 import GameBoard from "./GameBoard"
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 
 export default function TableLayout({ 
@@ -25,6 +25,7 @@ export default function TableLayout({
   const [infoMessage, setInfoMessage] = useState("")
   const [infoGameEnd, setInfoGameEnd] = useState(null)
   const [isGameOver, setIsGameOver] = useState(false)
+  const navigate = useNavigate();
 
 
  
