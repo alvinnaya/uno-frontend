@@ -30,8 +30,8 @@ console.log(gameState?.currentColor)
 
         <div className={`relative w-32 h-40 `} >
 
-          <div style={{ background: `${gameState?.currentColor}` }} className="absolute p-2 z-0">
-            <UnoCard card={`${gameState?.lastCard}`} />
+          <div style={{ background: `${gameState?.CurrentColor}` }} className="absolute p-2 z-0">
+            <UnoCard card={`${gameState?.LastCard}`} />
           </div>
 
         </div>

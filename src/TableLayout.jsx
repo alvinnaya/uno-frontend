@@ -48,7 +48,7 @@ useEffect(()=>{
 
 useEffect(()=>{
 
-  setInfoGameEnd(gameEndMessege?.winner)
+  setInfoGameEnd(gameEndMessege?.Winner)
 
 },[gameEndMessege])
 
@@ -66,16 +66,16 @@ useEffect(() => {
 
 
  const { me, opponents } = useMemo(() => {
-    if (!gameState?.allPlayers) {
+    if (!gameState?.AllPlayers) {
       return { me: null, opponents: [] };
     }
 
-    const me = gameState.allPlayers.find(
-      (p) => p.name === PlayerId
+    const me = gameState.AllPlayers.find(
+      (p) => p.Name === PlayerId
     );
 
-    const opponents = gameState.allPlayers.filter(
-      (p) => p.name !== PlayerId
+    const opponents = gameState.AllPlayers.filter(
+      (p) => p.Name !== PlayerId
     );
 
     return { me, opponents };
@@ -96,7 +96,7 @@ useEffect(() => {
     <div className="relative w-full h-screen overflow-hidden bg-neutral-800">
 
 
-    {gameState?.gameEnd&&(
+    {gameState?.GameEnd&&(
       <div className="w-screen h-screen bg-black/60 absolute z-50 flex flex-col items-center justify-center ">
           <div className="bg-white w-[30rem] h-[20rem] flex flex-col p-8 items-center rounded-xl ">
              <h1 className="text-3xl text-center p-6 font-bold">{`${infoGameEnd? infoGameEnd:"the winner are not decided yet"}`}</h1>
@@ -130,9 +130,9 @@ useEffect(() => {
         <div className="absolute top-6 left-1/2 -translate-x-1/2 ">
           <OpponentHand
             direction="horizontal"
-            label={topOpponent.name}
-            count={topOpponent.cardCount}
-            isActive={gameState?.currentPlayer === topOpponent.name}
+            label={topOpponent.Name}
+            count={topOpponent.CardCount}
+            isActive={gameState?.currentPlayer === topOpponent.Name}
           />
         </div>
       )}
@@ -143,9 +143,9 @@ useEffect(() => {
         <div className="absolute left-6 top-1/2 -translate-y-1/2">
           <OpponentHand
             direction="vertical"
-            label={leftOpponent.name}
-            count={leftOpponent.cardCount}
-            isActive={gameState?.currentPlayer === leftOpponent.name}
+            label={leftOpponent.Name}
+            count={leftOpponent.CardCount}
+            isActive={gameState?.CurrentPlayer === leftOpponent.Name}
           />
         </div>
       )}
@@ -156,9 +156,9 @@ useEffect(() => {
         <div className="absolute right-6 top-1/2 -translate-y-1/2">
           <OpponentHand
             direction="vertical"
-            label={rightOpponent.name}
-            count={rightOpponent.cardCount}
-            isActive={gameState?.currentPlayer === rightOpponent.name}
+            label={rightOpponent.Name}
+            count={rightOpponent.CardCount}
+            isActive={gameState?.CurrentPlayer === rightOpponent.Name}
           />
         </div>
       )}
