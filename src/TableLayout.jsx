@@ -66,16 +66,16 @@ useEffect(() => {
 
 
  const { me, opponents } = useMemo(() => {
-    if (!gameState?.allPlayers) {
+    if (!gameState?.AllPlayers) {
       return { me: null, opponents: [] };
     }
 
-    const me = gameState.allPlayers.find(
-      (p) => p.name === PlayerId
+    const me = gameState.AllPlayers.find(
+      (p) => p.Name === PlayerId
     );
 
-    const opponents = gameState.allPlayers.filter(
-      (p) => p.name !== PlayerId
+    const opponents = gameState.AllPlayers.filter(
+      (p) => p.Name !== PlayerId
     );
 
     return { me, opponents };
@@ -95,10 +95,10 @@ useEffect(() => {
   return (
     <div className="relative w-full h-screen overflow-hidden bg-neutral-800">
 
-
-    {gameState?.gameEnd&&(
+{/* navigate ke home untuk mengakhiti permainan */}
+    {gameState?.GameEnd&&(
       <div className="w-screen h-screen bg-black/60 absolute z-50 flex flex-col items-center justify-center ">
-          <div className="bg-white w-[30rem] h-[20rem] flex flex-col p-8 items-center rounded-xl ">
+          <div className="bg-amber-300 w-[30rem] h-[20rem] flex flex-col p-8 items-center rounded-xl ">
              <h1 className="text-3xl text-center p-6 font-bold">{`${infoGameEnd? infoGameEnd:"the winner are not decided yet"}`}</h1>
              <div className="p-4 my-16">
                 <div onClick={()=>{gameReset();  navigate(`/`);}}
@@ -112,13 +112,16 @@ useEffect(() => {
       
       
 
-      {infoMessage && (
-        <div className={`fixed top-6 left-1/2 -translate-x-1/2 z-[999] transition-opacity duration-500 bg-white`}>
-          <div className="bg-white text-black px-4 py-2 rounded-lg shadow-lg">
-            {infoMessage}
-          </div>
-        </div>
-      )}
+  {infoMessage && (
+  <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[999] shadow-[0_0_20px_8px_rgba(250,204,21,0.6)] ">
+    <div className="flex items-center justify-center max-w-sm px-6 py-4 bg-yellow-400 text-black font-extrabold text-lg rounded-xl shadow-lg border-2 border-yellow-500 animate-pop">
+      {infoMessage}
+    </div>
+  </div>
+)}
+
+
+
 
 
       
@@ -130,9 +133,10 @@ useEffect(() => {
         <div className="absolute top-6 left-1/2 -translate-x-1/2 ">
           <OpponentHand
             direction="horizontal"
-            label={topOpponent.name}
-            count={topOpponent.cardCount}
-            isActive={gameState?.currentPlayer === topOpponent.name}
+            label={topOpponent.Name}
+            count={topOpponent.CardCount}
+            isActive={gameState?.CurrentPlayer === topOpponent.Name}
+            
           />
         </div>
       )}
@@ -145,7 +149,8 @@ useEffect(() => {
             direction="vertical"
             label={leftOpponent.name}
             count={leftOpponent.cardCount}
-            isActive={gameState?.currentPlayer === leftOpponent.name}
+            isActive={gameState?.CurrentPlayer === leftOpponent.Name}
+            
           />
         </div>
       )}
@@ -156,9 +161,10 @@ useEffect(() => {
         <div className="absolute right-6 top-1/2 -translate-y-1/2">
           <OpponentHand
             direction="vertical"
-            label={rightOpponent.name}
-            count={rightOpponent.cardCount}
-            isActive={gameState?.currentPlayer === rightOpponent.name}
+            label={rightOpponent.Name}
+            count={rightOpponent.CardCount}
+            isActive={gameState?.CurrentPlayer === rightOpponent.Name}
+            
           />
         </div>
       )}
@@ -171,7 +177,11 @@ useEffect(() => {
 
       {/* PLAYER 1 (BAWAH - KAMU) */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2">
-        <PlayerHand playCard={playCard} cards={playerState?.hand } />
+        <PlayerHand 
+        playCard={playCard} 
+        cards={playerState?.hand}
+        isActive={gameState?.CurrentPlayer == PlayerId}
+         />
         <p className="text-center text-white mt-2">{PlayerId}</p>
       </div>
 

@@ -30,8 +30,8 @@ console.log(gameState?.currentColor)
 
         <div className={`relative w-32 h-40 `} >
 
-          <div style={{ background: `${gameState?.currentColor}` }} className="absolute p-2 z-0">
-            <UnoCard card={`${gameState?.lastCard}`} />
+          <div style={{ background: `${gameState?.CurrentColor}`,  boxShadow:  `0 0 20px 8px ${gameState?.CurrentColor}` , }} className="absolute p-2 z-0 rounded-lg  ">
+            <UnoCard card={`${gameState?.LastCard}`} />
           </div>
 
         </div>
@@ -46,17 +46,20 @@ console.log(gameState?.currentColor)
 
         </div> */}
 
-        <div className="w-[5rem] h-[3rem] text-xl font-black  border-4 border-red-600
-         flex justify-center items-center bg-zinc-100 hover:bg-zinc-200 text-black  rounded-xl"
-        onClick={()=>{
+        <div
+          className="w-[6rem] h-[3rem] bg-yellow-400 border-2 border-black rounded-lg shadow-lg flex justify-center items-center cursor-pointer 
+                    text-black font-extrabold text-xl select-none transform transition duration-150 
+                    hover:bg-yellow-300 hover:scale-105 active:scale-95"
+          onClick={() => {
             callUno(PlayerId)
             console.log("call uno")
-        }}>
-      
-            <h1 className="select-none pointer-events-none">
-              uno
-            </h1>
+          }}
+        >
+          <h1 className="pointer-events-none drop-shadow-md">
+            UNO
+          </h1>
         </div>
+
 
       
 

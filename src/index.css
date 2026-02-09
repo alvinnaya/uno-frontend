@@ -1,1 +1,21 @@
 @import "tailwindcss";
+
+
+@keyframes pop {
+  0% { transform: scale(0.5); opacity: 0; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); }
+}
+.animate-pop {
+  animation: pop 0.4s ease-out;
+}
+
+@keyframes pulseGlow {
+  0% { transform: scale(1); text-shadow: 0 0 5px rgba(250,204,21,0.5); }
+  50% { transform: scale(1.1); text-shadow: 0 0 20px rgba(250,204,21,0.8); }
+  100% { transform: scale(1); text-shadow: 0 0 5px rgba(250,204,21,0.5); }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 1s infinite;
+}

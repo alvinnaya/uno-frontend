@@ -3,7 +3,7 @@ import UnoCard from "./UnoCard"
 import { useEffect, useState } from "react";
 
 
-export default function PlayerHand({playCard, cards}) {
+export default function PlayerHand({playCard, cards, isActive}) {
   const [showColorPicker, setShowColorPicker] = useState(false)
   const [pendingCardIndex, setPendingCardIndex] = useState(null)
 
@@ -42,7 +42,7 @@ export default function PlayerHand({playCard, cards}) {
   const { PlayerId } = useParams();
   return (
     <>
-      <div className="flex gap-0">
+      <div className={`flex gap-0 ${isActive ? "bg-yellow-400  rounded-lg shadow-[0_0_20px_8px_rgba(250,204,21,0.6)] " : ""}`}>
         {cards?.map((card, i) => (
           <div onClick={() => playCardModif(card, i)} className={`-ml-10 first:ml-0 z-10 hover:z-50`} key={i}> 
               <UnoCard key={i} card={card.card} />
@@ -53,7 +53,7 @@ export default function PlayerHand({playCard, cards}) {
 
       {showColorPicker && (
         <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/50">
-          <div className="bg-white rounded-xl p-6 w-[18rem]">
+          <div className="bg-amber-300 rounded-xl p-6 w-[18rem]">
             <div className="text-lg font-semibold mb-4">Pilih warna</div>
             <div className="grid grid-cols-2 gap-3">
               <button className="h-12 rounded-lg bg-red-500 text-white" onClick={() => handleColorPick("Red")}>
