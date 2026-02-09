@@ -11,6 +11,7 @@ export default function CreatePlayerScreen() {
   const [playersCreated, setPlayersCreated] = useState(false);
   const [connectionState, setConnectionState] = useState("connecting");
   const [serverNotice, setServerNotice] = useState(null);
+  const [started, setStarted] = useState(false);
 
   const playerList = useMemo(
     () => Array.from({ length: numPlayers }, (_, i) => `Player${i + 1}`),
@@ -59,6 +60,37 @@ export default function CreatePlayerScreen() {
   };
 
   return (
+  <>
+  {!started && (
+        // ===== Landing Screen =====
+         <div className="min-h-screen w-full relative">
+  <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-900 text-white">
+    
+    {/* Gambar kartu UNO */}
+    <img
+      src="Uno-Logo-2010.png" // ganti path sesuai folder proyekmu
+      alt="UNO Card"
+      className="w-128 mb-8 animate-pulse"
+    />
+
+    {/* <h1 className="text-6xl font-black mb-8 text-yellow-400 drop-shadow-[0_0_10px_rgba(250,204,21,0.8)]">
+      UNO Web Game
+    </h1> */}
+
+    <p className="text-xl mb-12 animate-pulse">press to start</p>
+
+    <button
+      onClick={() => setStarted(true)}
+      className="px-6 py-2 text-xl animate-pulse-glow font-bold rounded-xl bg-yellow-400 text-black shadow-[0_0_20px_8px_rgba(250,204,21,0.6)] hover:bg-yellow-300 transition transform hover:scale-105 active:scale-95"
+    >
+      START
+    </button>
+  </div>
+</div>
+
+        
+      )}
+      
     <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center px-6">
       <div className="w-full max-w-xl rounded-2xl border border-slate-800 bg-slate-900/60 backdrop-blur p-8 shadow-2xl">
         <div className="flex items-center justify-between">
@@ -93,7 +125,7 @@ export default function CreatePlayerScreen() {
                   }}
                   className={`px-4 py-2 rounded-full border text-sm transition ${
                     numPlayers === count
-                      ? "border-amber-400 bg-amber-400/20 text-amber-200"
+                      ? "border-amber-400 bg-amber-400/20 text-amber-200 shadow-[0_0_20px_8px_rgba(250,204,21,0.6)] "
                       : "border-slate-700 text-slate-300 hover:border-slate-500"
                   }`}
                 >
@@ -128,7 +160,7 @@ export default function CreatePlayerScreen() {
                   type="button"
                   onClick={handleCreatePlayers}
                   disabled={connectionState !== "connected"}
-                  className="w-full rounded-xl bg-amber-400 px-4 py-2 text-slate-900 font-semibold shadow hover:bg-amber-300 disabled:opacity-50"
+                  className="w-full rounded-xl shadow-[0_0_20px_8px_rgba(250,204,21,0.6)]  bg-amber-400 px-4 py-2 text-slate-900 font-semibold shadow hover:bg-amber-300 disabled:opacity-50"
                 >
                   Create Players
                 </button>
@@ -163,5 +195,7 @@ export default function CreatePlayerScreen() {
         </div>
       </div>
     </div>
+  </>
+   
   );
 }
