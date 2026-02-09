@@ -3,93 +3,68 @@ import OpponentHand from "./OpponentHand"
 import GameBoard from "./GameBoard"
 import { useParams,useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
+import { useGameSignalR } from "./SignalR";
+import { callUno, drawCard, getCurrentState, playCard } from "./Api";
 
 export default function TableLayout({ 
-  gameState, 
-  playerState, 
-  info,
-  setInfo, 
-  getCurrentState,
-  playCard, 
-  drawCard, 
-  getPlayerCards, 
-  connectionState, 
-  callUno,
-  gameEnd,
-  gameReset,
-  gameEndMessege,
  }) {
 
   const { PlayerId } = useParams();
-  const [infoVisible, setInfoVisible] = useState(false)
-  const [infoMessage, setInfoMessage] = useState("")
-  const [infoGameEnd, setInfoGameEnd] = useState(null)
-  const [isGameOver, setIsGameOver] = useState(false)
   const navigate = useNavigate();
 
+    const {
+    gameState,
+    playerState,
+    info,
+    setInfo,
+    playerUno,
+    gameEndMessage,
+    connectionState
+  } = useGameSignalR(PlayerId)
 
- 
-useEffect(() => {
-    if (connectionState !== "connected") return;
-    getPlayerCards(PlayerId);
-    console.log("Fetched player cards for", PlayerId);
-  },[connectionState])
-  
+const [infoMessage, setInfoMessage] = useState("");
 
-useEffect(() => {
-  console.log("gameState updated:", gameState);
-  console.log("playerState updated:", playerState);
-  
-}, [gameState,playerState]);
+  // ================= INFO MESSAGE AUTO HIDE =================
+  useEffect(() => {
+    if (!info) return;
+    setInfoMessage(info);
+    const timer = setTimeout(() => {
+      setInfoMessage(null);
+      setInfo(null);
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, [info, setInfo]);
 
-useEffect(()=>{
-  getPlayerCards(PlayerId);
-},[gameState])
-
-useEffect(()=>{
-
-  setInfoGameEnd(gameEndMessege?.winner)
-
-},[gameEndMessege])
-
-useEffect(() => {
-  if (!info) return
-  setInfoMessage(info)
-  const timer = setTimeout(() => {
-    setInfoMessage(null)
-    setInfo(null)
-  }, 2500)
-  return () => clearTimeout(timer)
-}, [info])
-
-
-
-
- const { me, opponents } = useMemo(() => {
-    if (!gameState?.AllPlayers) {
-      return { me: null, opponents: [] };
+  // ================= GAME END MESSAGE =================
+  useEffect(() => {
+    if (gameEndMessage?.winner) {
+      console.log("Game ended:", gameEndMessage.winner);
     }
+  }, [gameEndMessage]);
 
-    const me = gameState.AllPlayers.find(
-      (p) => p.Name === PlayerId
-    );
+  useEffect(()=>{
+    const res =  getCurrentState();
+    console.log("getData", res)
+    
+  },[connectionState])
 
-    const opponents = gameState.AllPlayers.filter(
-      (p) => p.Name !== PlayerId
-    );
+  useEffect(()=>{
+console.log("game State", gameState)
+  },[gameState])
 
+  
+
+  // ================= PLAYER / OPPONENT MAPPING =================
+  const { me, opponents } = useMemo(() => {
+    if (!gameState?.AllPlayers) return { me: null, opponents: [] };
+    const me = gameState.AllPlayers.find((p) => p.Name === PlayerId);
+    const opponents = gameState.AllPlayers.filter((p) => p.Name !== PlayerId);
     return { me, opponents };
   }, [gameState, PlayerId]);
 
-  /**
-   * =========================
-   * MAP OPPONENT POSITIONS
-   * =========================
-   */
   const topOpponent = opponents[0];
   const leftOpponent = opponents[1];
   const rightOpponent = opponents[2];
-
 
 
   return (
@@ -172,17 +147,16 @@ useEffect(() => {
 
       {/* TENGAH (DECK + DISCARD) */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <GameBoard drawCard={drawCard} gameState={gameState} callUno={callUno} />
+        <GameBoard drawCard={()=>{drawCard(PlayerId)}} gameState={gameState} callUno={callUno(PlayerId)} />
       </div>
 
       {/* PLAYER 1 (BAWAH - KAMU) */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2">
         <PlayerHand 
-        playCard={playCard} 
         cards={playerState?.hand}
         isActive={gameState?.CurrentPlayer == PlayerId}
          />
-        <p className="text-center text-white mt-2">{PlayerId}</p>
+        <p className="text-center mt-2 font-bold text-yellow-500">{PlayerId}</p>
       </div>
 
     </div>

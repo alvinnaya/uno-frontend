@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { connectSocket, sendRawMessage } from "./Socket";
+import { createPlayer, startGame } from "./Api";
 
 const PLAYER_OPTIONS = [2, 3, 4];
 
@@ -18,45 +19,25 @@ export default function CreatePlayerScreen() {
     [numPlayers]
   );
 
-  useEffect(() => {
-    if (!playerList.includes(playerName)) {
-      setPlayerName(playerList[0]);
+
+
+  const handleCreatePlayers = async() => {
+    // sendRawMessage(`Game createplayer ${numPlayers}`);
+    const res = await createPlayer(numPlayers);
+    console.log("createPlayer", res)
+    if(res.statusText == "OK"){
+    await setPlayersCreated(true);
     }
-  }, [playerList, playerName]);
-
-  useEffect(() => {
-    connectSocket(
-      (message) => {
-        if (message?.type === "error") {
-          setServerNotice({ type: "error", text: message.data?.message ?? "Error" });
-          return;
-        }
-
-        if (message?.type === "info") {
-          setServerNotice({ type: "info", text: message.data?.message ?? "Info" });
-          return;
-        }
-
-        if (message?.type === "RAW_MESSAGE") {
-          setServerNotice({ type: "info", text: message.data });
-        }
-      },
-      {
-        onOpen: () => setConnectionState("connected"),
-        onClose: () => setConnectionState("disconnected"),
-        onError: () => setConnectionState("error"),
-      }
-    );
-  }, []);
-
-  const handleCreatePlayers = () => {
-    sendRawMessage(`Game createplayer ${numPlayers}`);
-    setPlayersCreated(true);
+    
   };
 
-  const handleStartGame = () => {
-    sendRawMessage("Game start");
-    navigate(`/${playerName}`);
+  const handleStartGame = async() => {
+    const res = await startGame();
+    console.log("start game", res)
+    if(res.statusText == "OK"){
+      await navigate(`/${playerName}`);
+    }
+    
   };
 
   return (
@@ -98,7 +79,7 @@ export default function CreatePlayerScreen() {
             <p className="text-xs uppercase tracking-[0.3em] text-slate-400">UNO WebSocket Lobby</p>
             <h1 className="text-3xl font-semibold text-white mt-2">Buat Game Baru</h1>
           </div>
-          <div
+          {/* <div
             className={`text-xs px-3 py-1 rounded-full border ${
               connectionState === "connected"
                 ? "border-emerald-400 text-emerald-300"
@@ -108,7 +89,7 @@ export default function CreatePlayerScreen() {
             }`}
           >
             {connectionState}
-          </div>
+          </div> */}
         </div>
 
         <div className="mt-8 space-y-6">
@@ -159,7 +140,7 @@ export default function CreatePlayerScreen() {
                 <button
                   type="button"
                   onClick={handleCreatePlayers}
-                  disabled={connectionState !== "connected"}
+                  // disabled={connectionState !== "connected"}
                   className="w-full rounded-xl shadow-[0_0_20px_8px_rgba(250,204,21,0.6)]  bg-amber-400 px-4 py-2 text-slate-900 font-semibold shadow hover:bg-amber-300 disabled:opacity-50"
                 >
                   Create Players
@@ -167,7 +148,7 @@ export default function CreatePlayerScreen() {
                 <button
                   type="button"
                   onClick={handleStartGame}
-                  disabled={!playersCreated || connectionState !== "connected"}
+                  // disabled={!playersCreated || connectionState !== "connected"}
                   className="w-full rounded-xl border border-slate-700 px-4 py-2 text-slate-100 hover:border-amber-400 disabled:opacity-50"
                 >
                   Start Game

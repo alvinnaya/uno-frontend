@@ -19,7 +19,7 @@ export default function OpponentHand({ direction = "horizontal", label, count = 
           
         ))}
       </div>
-      <p className="text-white text-sm mt-2">{label}</p>
+      <p className="text-white font-bold text-yellow-500 text-sm mt-2">{label}</p>
     </div>
   )
 }

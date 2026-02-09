@@ -12,7 +12,7 @@ console.log(gameState?.currentColor)
 
     <div className="flex gap-8 items-center">
 
-      <div className="flex gap-4 items-center">
+      <div className="flex gap-4 items-center relative">
         {/* Deck */}
         <div className={`relative w-32 h-40 `} onClick={()=>{drawCard(PlayerId)}} >
 

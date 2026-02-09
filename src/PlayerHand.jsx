@@ -1,9 +1,10 @@
 import { useParams } from "react-router-dom"
 import UnoCard from "./UnoCard"
 import { useEffect, useState } from "react";
+import { playCard } from "./Api";
 
 
-export default function PlayerHand({playCard, cards, isActive}) {
+export default function PlayerHand({ cards, isActive}) {
   const [showColorPicker, setShowColorPicker] = useState(false)
   const [pendingCardIndex, setPendingCardIndex] = useState(null)
 
@@ -20,7 +21,7 @@ export default function PlayerHand({playCard, cards, isActive}) {
       return
     }else{
 
-      playCard(PlayerId, i, card.cardColor)
+      playCard(PlayerId,i, card.cardColor)
 
     }
     
@@ -52,8 +53,8 @@ export default function PlayerHand({playCard, cards, isActive}) {
       </div>
 
       {showColorPicker && (
-        <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/50">
-          <div className="bg-amber-300 rounded-xl p-6 w-[18rem]">
+        <div className="fixed inset-0 z-[999] h-full w-full flex items-center justify-center bg-black/50">
+          <div className="bg-slate-200 rounded-xl p-6 w-[18rem]">
             <div className="text-lg font-semibold mb-4">Pilih warna</div>
             <div className="grid grid-cols-2 gap-3">
               <button className="h-12 rounded-lg bg-red-500 text-white" onClick={() => handleColorPick("Red")}>
@@ -69,7 +70,7 @@ export default function PlayerHand({playCard, cards, isActive}) {
                 Kuning
               </button>
             </div>
-            <button className="mt-4 w-full h-10 rounded-lg border border-gray-300" onClick={closeColorPicker}>
+            <button className="mt-4 w-full h-10 text-slate-100 rounded-lg border border-gray-300 bg-slate-800  rounded-lg" onClick={closeColorPicker}>
               Batal
             </button>
           </div>

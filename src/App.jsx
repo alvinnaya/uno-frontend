@@ -10,29 +10,7 @@ import { useEffect } from "react";
 
 function App() {
 
-  const {
-    gameState,
-    playerState,
-    info,
-    connectionState,
-    playCard,
-    drawCard,
-    getCurrentState,
-    getPlayerCards,
-    callUno,
-    setInfo,
-    gameEndMessege,
-    gameReset,
-  } = useGameSocket();
 
-
-  useEffect(() => {
-    if (connectionState !== "connected") return;
-    getCurrentState();
-  
-
-    console.log("TableLayout useEffect ran");
-  }, [connectionState]);
   return (
     <>
      
@@ -40,18 +18,7 @@ function App() {
        <Routes>
       <Route path="/" element={<CreatePlayerScreen />} />
       <Route path="/:PlayerId" element={<TableLayout 
-        gameState={gameState}
-        playerState={playerState}
-        info={info}
-        playCard={playCard}
-        drawCard={drawCard}
-        getCurrentState={getCurrentState}
-        getPlayerCards={getPlayerCards}
-        connectionState={connectionState}
-        callUno={callUno}
-        setInfo={setInfo}
-        gameReset={gameReset}
-        gameEndMessege={gameEndMessege}
+       
       />} />
      
     </Routes>
