@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { playCard } from "./Api";
 
 
-export default function PlayerHand({ cards, isActive}) {
+export default function PlayerHand({ cards, isActive, connectionId }) {
   const [showColorPicker, setShowColorPicker] = useState(false)
   const [pendingCardIndex, setPendingCardIndex] = useState(null)
 
@@ -19,17 +19,17 @@ export default function PlayerHand({ cards, isActive}) {
       setPendingCardIndex(i)
       setShowColorPicker(true)
       return
-    }else{
+    } else {
 
-      playCard(PlayerId,i, card.cardColor)
+      playCard(PlayerId, i, card.cardColor, connectionId)
 
     }
-    
+
   }
 
   const handleColorPick = (color) => {
     if (pendingCardIndex === null) return
-    playCard(PlayerId, pendingCardIndex, color)
+    playCard(PlayerId, pendingCardIndex, color, connectionId)
     setPendingCardIndex(null)
     setShowColorPicker(false)
   }
@@ -45,10 +45,10 @@ export default function PlayerHand({ cards, isActive}) {
     <>
       <div className={`flex gap-0 ${isActive ? "bg-yellow-400  rounded-lg shadow-[0_0_20px_8px_rgba(250,204,21,0.6)] " : ""}`}>
         {cards?.map((card, i) => (
-          <div onClick={() => playCardModif(card, i)} className={`-ml-10 first:ml-0 z-10 hover:z-50`} key={i}> 
-              <UnoCard key={i} card={card.card} />
+          <div onClick={() => playCardModif(card, i)} className={`-ml-10 first:ml-0 z-10 hover:z-50`} key={i}>
+            <UnoCard key={i} card={card.card} />
           </div>
-          
+
         ))}
       </div>
 
