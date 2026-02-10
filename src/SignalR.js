@@ -37,7 +37,9 @@ export function useGameSignalR(playerName) {
 
         switch (type) {
           case "GameState":
+            setGameState(data);
           case "gameState":
+            setGameState(data);
           case "state":
             setGameState(data);
             break;

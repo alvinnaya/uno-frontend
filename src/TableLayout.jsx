@@ -57,7 +57,7 @@ export default function TableLayout({
   const handleDrawCard = async (player) => {
     try {
       const res = await drawCard(player);
-      if (res.data) {
+      if (res.data && !res.data.message) {
         console.log("Draw card response:", res.data);
         setPlayerState(res.data);
       }
@@ -109,7 +109,7 @@ export default function TableLayout({
     <div className="relative w-full h-screen overflow-hidden bg-neutral-800">
 
       {/* navigate ke home untuk mengakhiti permainan */}
-      {gameState?.GameEnd && (
+      {gameState?.gameEnd && (
         <div className="w-screen h-screen bg-black/60 absolute z-50 flex flex-col items-center justify-center ">
           <div className="bg-amber-300 w-[30rem] h-[20rem] flex flex-col p-8 items-center rounded-xl ">
             <h1 className="text-3xl text-center p-6 font-bold">{`${gameEndMessage?.winner ? `Winner: ${gameEndMessage.winner}` : "Game ended"}`}</h1>
