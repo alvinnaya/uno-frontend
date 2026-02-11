@@ -50,3 +50,9 @@ export async function callUno(player) {
   console.log("call uno", response);
   return response;
 }
+
+export async function resetGame() {
+  const response = await axios.post(`${BASE_URL}/resetgame`);
+  console.log("reset game", response);
+  return response;
+}

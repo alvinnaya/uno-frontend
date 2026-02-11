@@ -4,7 +4,7 @@ import GameBoard from "./GameBoard"
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { useGameSignalR } from "./SignalR";
-import { callUno, drawCard, getCurrentState, playCard, getCard } from "./Api";
+import { callUno, drawCard, getCurrentState, playCard, getCard, resetGame } from "./Api";
 
 export default function TableLayout({
 }) {
@@ -109,17 +109,49 @@ export default function TableLayout({
     <div className="relative w-full h-screen overflow-hidden bg-neutral-800">
 
       {/* navigate ke home untuk mengakhiti permainan */}
-      {gameState?.GameEnd && (
-        <div className="w-screen h-screen bg-black/60 absolute z-50 flex flex-col items-center justify-center ">
-          <div className="bg-amber-300 w-[30rem] h-[20rem] flex flex-col p-8 items-center rounded-xl ">
-            <h1 className="text-3xl text-center p-6 font-bold">{`${gameEndMessage?.winner ? `Winner: ${gameEndMessage.winner}` : "Game ended"}`}</h1>
-            <div className="p-4 my-16">
-              <div onClick={() => { navigate(`/`); }}
-                className="bg-red-600 select-none text-lg p-2 font-semibold rounded-lg m-auto hover:bg-red-500">end game</div>
+      {/* navigate ke home untuk mengakhiti permainan */}
+      {(gameState?.GameEnd || gameState?.gameEnd) && (
+        <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-slate-900/95 backdrop-blur-md animate-fade-in">
+          {/* Confetti/Fireworks Background Effect (Simple CSS dots implementation could be added, but keeping it clean for now) */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute top-0 left-1/4 w-2 h-2 bg-red-500 rounded-full animate-ping"></div>
+            <div className="absolute top-10 right-1/4 w-3 h-3 bg-yellow-500 rounded-full animate-ping delay-100"></div>
+            <div className="absolute bottom-1/4 left-1/3 w-2 h-2 bg-blue-500 rounded-full animate-ping delay-300"></div>
+          </div>
+
+          <div className="relative flex flex-col items-center p-12 text-center animate-scale-in">
+
+            {/* Trophy Icon / Header */}
+            <div className="text-8xl mb-6 filter drop-shadow-[0_0_20px_rgba(250,204,21,0.8)] animate-bounce-slow">
+              🏆
             </div>
+
+            <h1 className="text-6xl font-black text-white uppercase tracking-wider mb-2 drop-shadow-lg">
+              {gameEndMessage?.name ? "WINNER!" : "GAME OVER"}
+            </h1>
+
+            <div className="text-3xl font-bold text-yellow-400 mb-12 tracking-wide uppercase">
+              {gameEndMessage?.name || gameEndMessage?.Name || gameEndMessage?.winner || "No Winner"}
+            </div>
+
+            {/* Action Button */}
+            <button
+              onClick={async () => {
+                try {
+                  await resetGame(); // Call ResetGame from API
+                } catch (error) {
+                  console.error("Failed to reset game:", error);
+                }
+                navigate(`/`);
+              }}
+              className="group relative px-10 py-5 bg-red-600 rounded-full font-black text-2xl text-white tracking-widest uppercase shadow-[0_10px_20px_rgba(220,38,38,0.5)] hover:bg-red-500 hover:scale-110 hover:shadow-[0_15px_30px_rgba(220,38,38,0.7)] active:scale-95 transition-all duration-300"
+            >
+              Back to Lobby
+              <span className="absolute inset-0 rounded-full ring-4 ring-white/30 group-hover:ring-white/60 transition-all"></span>
+            </button>
+
           </div>
         </div>
-
       )}
 
 

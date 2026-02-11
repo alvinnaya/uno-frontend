@@ -37,7 +37,14 @@ export function useGameSignalR(playerName) {
 
         switch (type) {
           case "GameState":
+            setGameState(data);
+            break;
           case "gameState":
+            setGameState(data);
+            break;
+          case "winner":
+            setGameEndMessage(data);
+            break;
           case "state":
             setGameState(data);
             break;
@@ -104,6 +111,11 @@ export function useGameSignalR(playerName) {
     });
 
     connection.on("GameEnd", (data) => {
+      setGameEndMessage(data);
+    });
+
+    connection.on("winner", (data) => {
+      console.log("Winner received:", data);
       setGameEndMessage(data);
     });
 
