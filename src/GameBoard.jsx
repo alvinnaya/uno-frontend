@@ -49,7 +49,7 @@ export default function GameBoard({ drawCard, gameState, callUno }) {
         <div
           className="w-[6rem] h-[3rem] bg-yellow-400 border-2 border-black rounded-lg shadow-lg flex justify-center items-center cursor-pointer 
                     text-black font-extrabold text-xl select-none transform transition duration-150 
-                    hover:bg-yellow-300 hover:scale-105 active:scale-95 z-[100] relative pointer-events-auto"
+                    hover:bg-yellow-300 hover:scale-105 active:scale-95 z-[30] relative pointer-events-auto"
           onClick={() => {
             console.log("tolo")
             callUno(PlayerId)

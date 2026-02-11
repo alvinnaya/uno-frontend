@@ -57,7 +57,7 @@ export default function TableLayout({
   const handleDrawCard = async (player) => {
     try {
       const res = await drawCard(player);
-      if (res.data) {
+      if (res.data && !res.data.message) {
         console.log("Draw card response:", res.data);
         setPlayerState(res.data);
       }
